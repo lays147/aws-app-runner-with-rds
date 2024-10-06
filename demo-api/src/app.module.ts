@@ -16,7 +16,10 @@ import { TerminusModule } from '@nestjs/terminus';
         host: configService.get('POSTGRES_HOST'),
         port: +configService.get('POSTGRES_PORT', 5432),
         username: configService.get('POSTGRES_USERNAME'),
-        password: configService.get('POSTGRES_PASSWORD'),
+        password: () => {
+          const secret = JSON.parse(configService.get('POSTGRES_SECRET'));
+          return secret['password'];
+        },
         database: configService.get('POSTGRES_DATABASE'),
         entities: [],
         synchronize: true,
