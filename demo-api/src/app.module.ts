@@ -20,7 +20,13 @@ import { TerminusModule } from '@nestjs/terminus';
         database: configService.get('POSTGRES_DATABASE'),
         entities: [],
         synchronize: true,
-        ssl: configService.get('NODE_ENV') == 'production' ? true : false,
+        ssl: configService.get('NODE_ENV') === 'production' ? true : false,
+        extra: {
+          ssl:
+            configService.get('NODE_ENV') === 'production'
+              ? { rejectUnauthorized: false }
+              : null,
+        },
       }),
       inject: [ConfigService],
     }),
